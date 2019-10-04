@@ -6,7 +6,7 @@ from .runmodel import step_scenario, save_decision
 
 class SimplCalcPeriod(Period):
     @subscribe
-    async def submit_decision(self, operand, **kwargs):
+    async def submit_decision(self, action, **kwargs):
         """
         Receives the operand played and stores as a ``Decision`` then
         steps the model saving the ``Result``. A new ``Period`` is added to
@@ -18,7 +18,7 @@ class SimplCalcPeriod(Period):
         for k in kwargs:
             self.session.log.info("submit_decision: Key: {}".format(k))
 
-        await save_decision(self.pk, operand)
+        await save_decision(self.pk, action)
         self.session.log.info("submit_decision: saved decision")
 
         await step_scenario(self.scenario.pk)

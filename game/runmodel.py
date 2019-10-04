@@ -8,7 +8,7 @@ async def save_decision(period_id, decision):
         decision = await api_session.decisions.get_or_create(
             period=period_id,
             name='decision',
-            data={"operand": decision},
+            data={"action": decision},
             defaults={"role": None}
         )
         return decision
@@ -24,23 +24,23 @@ async def step_scenario(scenario_id):
         period_count = len(periods)
         period = periods[period_count - 1]
 
-        operand = 0.0
+        action = 'deal'
         period_decisions = await api_session.decisions.filter(period=period.id)
         if len(period_decisions) > 0:
-            operand = float(period_decisions[0].data["operand"])
+            action = period_decisions[0].data["action"]
 
-        prev_total = 0.0
+        data = {}
         if period_count > 1:
             prev_period = periods[period_count - 2]
             prev_period_results = \
                 await api_session.results.filter(period=prev_period.id)
             if len(prev_period_results) > 0:
-                prev_total = float(prev_period_results[0].data["total"])
+                data = prev_period_results[0].data["data"]
 
         # step model
         model = Model()
-        total = model.step(operand, prev_total)
-        data = {"total": total}
+        data = model.step(action, data)
+        data = {"data": data}
 
         result = await api_session.results.get_or_create(
             period=period.id,
