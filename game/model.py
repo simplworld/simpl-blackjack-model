@@ -25,7 +25,8 @@ class Model(object):
             'dealer_score': 0,
             'player_busted': False,
             'dealer_busted': False,
-            'push': False
+            'push': False,
+            'player_done': False
         }
 
     def createDeck(self):
@@ -72,7 +73,7 @@ class Model(object):
             score += self.calcTotal(self.calcRankScore(card['rank']))
         return score
 
-    def isBusted(score):
+    def isBusted(self, score):
         return score > 21
 
     def step(self, action, data={}):
@@ -97,16 +98,22 @@ class Model(object):
             data['player_cards'].append(card)
             data['player_score'] = self.calcHandScore(data['player_cards'])
             data['player_busted'] = self.isBusted(data['player_score'])
-        else:
+            if data['player_busted']:
+                data['player_done'] = True
+            return data
+        elif action == 'stand':
+            data['player_done'] = True
             while data['dealer_score'] < 19:
                 card = data.get('deck', []).pop()
                 data['dealer_cards'].append(card)
                 data['dealer_score'] = self.calcHandScore(data['dealer_cards'])
-            data['dealer_busted'] = self.isBusted(data['dealer_score']),
+            data['dealer_busted'] = self.isBusted(data['dealer_score'])
             if data['dealer_score'] == data['player_score']:
                 data['push'] = True
-            if data['dealer_score'] > data['player_score']:
-                data['player_busted'] = True
             if data['dealer_score'] < data['player_score']:
+                data['player_busted'] = True
+            if data['dealer_score'] > data['player_score']:
                 data['dealer_busted'] = True
-        return data
+            if data['dealer_score'] == data['player_score']:
+                data['push'] = True
+            return data
