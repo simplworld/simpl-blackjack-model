@@ -103,7 +103,7 @@ class Model(object):
             return data
         elif action == 'stand':
             data['player_done'] = True
-            while data['dealer_score'] < 19:
+            while data['dealer_score'] < 21:
                 card = data.get('deck', []).pop()
                 data['dealer_cards'].append(card)
                 data['dealer_score'] = self.calcHandScore(data['dealer_cards'])
