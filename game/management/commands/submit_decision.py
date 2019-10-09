@@ -20,7 +20,7 @@ async def command(scenario_id, decision):
         return
 
     async with games_client as api_session:
-        game = await api_session.games.get(slug='simpl-calc')
+        game = await api_session.games.get(slug='simpl-blackjack')
 
         # periods are returned in order
         periods = await api_session.periods.filter(scenario=scenario_id,
