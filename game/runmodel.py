@@ -66,9 +66,6 @@ async def step_scenario(scenario_id):
                 name='Scenario X',
             )
 
-            print('-------------------------')
-            print(scenario.id)
-
             next_period = await api_session.periods.get_or_create(
                 scenario=new_scenario.id,
                 order=1,
