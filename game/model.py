@@ -83,6 +83,9 @@ class Model(object):
             prev_total - the calculated total from the previous period
         Returns new total
         """
+        if action == 'new':
+            return self.data
+
         if action == 'deal':
             deck = self.createDeck()
             self.data['deck'] = deck

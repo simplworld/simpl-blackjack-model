@@ -14,7 +14,6 @@ class SimplCalcPeriod(Period):
         """
         # Call will prefix the ROOT_TOPIC
         # "world.simpl.sims.simpl-calc.model.period.1.submit_decision"
-
         for k in kwargs:
             self.session.log.info("submit_decision: Key: {}".format(k))
 

@@ -37,24 +37,43 @@ async def step_scenario(scenario_id):
             if len(prev_period_results) > 0:
                 data = prev_period_results[0].data["data"]
 
-        # step model
         model = Model()
         data = model.step(action, data)
         data = {"data": data}
 
-        result = await api_session.results.get_or_create(
-            period=period.id,
-            name='results',
-            data=data,
-            defaults={"role": None}
-        )
+        if not action == 'new':
+            # step model
 
-        # prepare for next step by adding a new period
-        next_period_order = period.order + 1
-        next_period = await api_session.periods.get_or_create(
-            scenario=scenario_id,
-            order=next_period_order,
-        )
+            result = await api_session.results.get_or_create(
+                period=period.id,
+                name='results',
+                data=data,
+                defaults={"role": None}
+            )
+
+            # prepare for next step by adding a new period
+            next_period_order = period.order + 1
+            next_period = await api_session.periods.get_or_create(
+                scenario=scenario_id,
+                order=next_period_order,
+            )
+
+        if action == 'new':
+            old_scenario = await api_session.scenarios.filter(id=scenario_id)
+            runuser = old_scenario[0].runuser
+            new_scenario = await api_session.scenarios.get_or_create(
+                runuser=runuser,
+                name='Scenario X',
+            )
+
+            print('-------------------------')
+            print(scenario.id)
+
+            next_period = await api_session.periods.get_or_create(
+                scenario=new_scenario.id,
+                order=1,
+            )
+
         await next_period.save()
 
         return next_period.id
