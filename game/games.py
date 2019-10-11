@@ -14,13 +14,14 @@ class SimplCalcPeriod(Period):
         """
         # Call will prefix the ROOT_TOPIC
         # "world.simpl.sims.simpl-calc.model.period.1.submit_decision"
+
         for k in kwargs:
             self.session.log.info("submit_decision: Key: {}".format(k))
 
         await save_decision(self.pk, action)
         self.session.log.info("submit_decision: saved decision")
 
-        await step_scenario(self.scenario.pk)
+        await step_scenario(self.scenario.pk, action)
         self.session.log.info("submit_decision: stepped scenario")
 
 

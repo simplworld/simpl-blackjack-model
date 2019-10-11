@@ -76,25 +76,30 @@ class Model(object):
     def isBusted(self, score):
         return score > 21
 
-    def step(self, action, data={}):
+    def step(self, action, data=None):
         """
         Parameters:
             action - current period's decision
             prev_total - the calculated total from the previous period
         Returns new total
         """
+        if data is None:
+            data = {}
+
         if action == 'new':
             return self.data
 
         if action == 'deal':
+
             deck = self.createDeck()
-            self.data['deck'] = deck
-            self.data['player_cards'].append(deck.pop())
-            self.data['dealer_cards'].append(deck.pop())
-            self.data['player_cards'].append(deck.pop())
-            self.data['player_score'] = self.calcHandScore(self.data['player_cards'])
-            self.data['dealer_score'] = self.calcHandScore(self.data['dealer_cards'])
-            return self.data
+            deal_data = self.data.copy()
+            deal_data['deck'] = deck
+            deal_data['player_cards'].append(deck.pop())
+            deal_data['dealer_cards'].append(deck.pop())
+            deal_data['player_cards'].append(deck.pop())
+            deal_data['player_score'] = self.calcHandScore(deal_data['player_cards'])
+            deal_data['dealer_score'] = self.calcHandScore(deal_data['dealer_cards'])
+            return deal_data
 
         elif action == 'hit':
             card = data.get('deck', []).pop()

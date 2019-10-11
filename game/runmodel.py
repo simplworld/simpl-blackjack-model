@@ -14,7 +14,7 @@ async def save_decision(period_id, decision):
         return decision
 
 
-async def step_scenario(scenario_id):
+async def step_scenario(scenario_id, action=None):
     """
     Step the scenario's current period
     """
@@ -24,10 +24,8 @@ async def step_scenario(scenario_id):
         period_count = len(periods)
         period = periods[period_count - 1]
 
-        action = 'deal'
-        period_decisions = await api_session.decisions.filter(period=period.id)
-        if len(period_decisions) > 0:
-            action = period_decisions[0].data["action"]
+        if action is None:
+            action = 'deal'
 
         data = {}
         if period_count > 1:
@@ -43,7 +41,6 @@ async def step_scenario(scenario_id):
 
         if not action == 'new':
             # step model
-
             result = await api_session.results.get_or_create(
                 period=period.id,
                 name='results',
@@ -63,14 +60,27 @@ async def step_scenario(scenario_id):
             runuser = old_scenario[0].runuser
             new_scenario = await api_session.scenarios.get_or_create(
                 runuser=runuser,
-                name='Scenario X',
+                name='Scenario {}'.format(scenario_id + 1),
+            )
+
+            new_period_for_new_scenario = await api_session.periods.get_or_create(
+                scenario=new_scenario.id,
+                order=1,
+            )
+
+            result = await api_session.results.get_or_create(
+                period=new_period_for_new_scenario.id,
+                name='results',
+                data=data,
+                defaults={"role": None}
             )
 
             next_period = await api_session.periods.get_or_create(
                 scenario=new_scenario.id,
-                order=1,
+                order=2
             )
 
         await next_period.save()
 
         return next_period.id
+
