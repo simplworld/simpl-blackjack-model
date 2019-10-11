@@ -1,3 +1,5 @@
+import uuid
+
 from modelservice.simpl import games_client
 from .model import Model
 
@@ -60,7 +62,7 @@ async def step_scenario(scenario_id, action=None):
             runuser = old_scenario[0].runuser
             new_scenario = await api_session.scenarios.get_or_create(
                 runuser=runuser,
-                name='Scenario {}'.format(scenario_id + 1),
+                name='Scenario {}'.format(uuid.uuid4()),
             )
 
             new_period_for_new_scenario = await api_session.periods.get_or_create(
