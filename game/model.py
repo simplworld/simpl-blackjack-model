@@ -76,11 +76,26 @@ class Model(object):
     def isBusted(self, score):
         return score > 21
 
+    def dealerTurn(self, data):
+        data['player_done'] = True
+        while data['dealer_score'] < 21:
+            card = data.get('deck', []).pop()
+            data['dealer_cards'].append(card)
+            data['dealer_score'] = self.calcHandScore(data['dealer_cards'])
+        data['dealer_busted'] = self.isBusted(data['dealer_score'])
+        if data['dealer_score'] < data['player_score']:
+            data['player_busted'] = True
+        if data['dealer_score'] > data['player_score']:
+            data['dealer_busted'] = True
+        if data['dealer_score'] == data['player_score']:
+            data['push'] = True
+        return data
+
     def step(self, action, data=None):
         """
         Parameters:
             action - current period's decision
-            prev_total - the calculated total from the previous period
+            data - the game data (cards, scores etc)
         Returns new total
         """
         if data is None:
@@ -90,7 +105,6 @@ class Model(object):
             return self.data
 
         if action == 'deal':
-
             deck = self.createDeck()
             deal_data = self.data.copy()
             deal_data['deck'] = deck
@@ -105,40 +119,12 @@ class Model(object):
             card = data.get('deck', []).pop()
             data['player_cards'].append(card)
             data['player_score'] = self.calcHandScore(data['player_cards'])
-            print(data['player_score'])
             data['player_busted'] = self.isBusted(data['player_score'])
-            print(data['player_busted'])
             if data['player_busted']:
                 data['player_done'] = True
             if data['player_score'] == 21:
-                data['player_done'] = True
-                while data['dealer_score'] < 21:
-                    card = data.get('deck', []).pop()
-                    data['dealer_cards'].append(card)
-                    data['dealer_score'] = self.calcHandScore(data['dealer_cards'])
-                data['dealer_busted'] = self.isBusted(data['dealer_score'])
-                if data['dealer_score'] == data['player_score']:
-                    data['push'] = True
-                if data['dealer_score'] < data['player_score']:
-                    data['player_busted'] = True
-                if data['dealer_score'] > data['player_score']:
-                    data['dealer_busted'] = True
-                if data['dealer_score'] == data['player_score']:
-                    data['push'] = True
+                data = self.dealerTurn(data)
             return data
         elif action == 'stand':
-            data['player_done'] = True
-            while data['dealer_score'] < 21:
-                card = data.get('deck', []).pop()
-                data['dealer_cards'].append(card)
-                data['dealer_score'] = self.calcHandScore(data['dealer_cards'])
-            data['dealer_busted'] = self.isBusted(data['dealer_score'])
-            if data['dealer_score'] == data['player_score']:
-                data['push'] = True
-            if data['dealer_score'] < data['player_score']:
-                data['player_busted'] = True
-            if data['dealer_score'] > data['player_score']:
-                data['dealer_busted'] = True
-            if data['dealer_score'] == data['player_score']:
-                data['push'] = True
+            data = self.dealerTurn(data)
             return data
