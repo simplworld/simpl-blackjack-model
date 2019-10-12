@@ -11,8 +11,8 @@ def echo(text, value):
 
 def delete_default_run(games_client):
     """ Delete default Run """
-    echo('Resetting the Simpl Calc game default run...', ' done')
-    game = games_client.games.get_or_create(slug='simpl-calc')
+    echo('Resetting the Simpl Blackjack game default run...', ' done')
+    game = games_client.games.get_or_create(slug='simpl-blackjack')
     runs = games_client.runs.filter(game=game.id)
     for run in runs:
         if run.name == 'default':
@@ -24,8 +24,8 @@ def delete_default_run(games_client):
               help="Delete default game run and recreate it from scratch")
 def command(reset):
     """
-    Create and initialize Simpl Calc game.
-    Create a "default" Simpl Calc run.
+    Create and initialize Simpl Blackjack game.
+    Create a "default" Simpl Blackjack run.
     Set the run phase to "Play".
     Add 1 leader ("leader") to the run
     Add 2 players ("s1", "s2") to the run.
@@ -40,8 +40,8 @@ def command(reset):
 
     # Create a Game
     game = games_client.games.get_or_create(
-        name='Simpl Calc',
-        slug='simpl-calc'
+        name='Simpl Blackjack',
+        slug='simpl-blackjack'
     )
     echo('getting or creating game: ', game.name)
 
@@ -74,9 +74,9 @@ def add_run(game, run_name, user_count, phase, games_client):
 
     fac_user = games_client.users.get_or_create(
         password='leader',
-        first_name='CALC',
+        first_name='Blackjack',
         last_name='Leader',
-        email='leader@calc.edu',
+        email='leader@blackjack.edu',
     )
     echo('getting or creating user: ', fac_user.email)
 
@@ -100,7 +100,7 @@ def add_player(user_number, run, games_client):
 
     username = 's{0}'.format(user_number)
     first_name = 'Student{0}'.format(user_number)
-    email = '{0}@calc.edu'.format(username)
+    email = '{0}@blackjack.edu'.format(username)
 
     user = games_client.users.get_or_create(
         password=username,

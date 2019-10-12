@@ -1,11 +1,11 @@
-# simpl-calc-model - example single-player simulation model service.
+# simpl-blackjack-model - example single-player simulation model service.
 
 ## Python Setup (assumes Python >= 3.6 and simpl-games-api server running)
 
 ```shell
-$ git clone git@github.com:simplworld/simpl-calc-model.git
-$ cd simpl-calc-model
-$ mkvirtualenv simpl-calc-model
+$ git clone git@github.com:simplworld/simpl-blackjack-model.git
+$ cd simpl-blackjack-model
+$ mkvirtualenv simpl-blackjack-model
 $ add2virtualenv .
 
 $ pip install -r requirements.txt
@@ -13,7 +13,7 @@ $ pip install -r requirements.txt
 ## Run model service
 
 ```shell
-$ export DJANGO_SETTINGS_MODULE=simpl_calc_model.settings
+$ export DJANGO_SETTINGS_MODULE=simpl_blackjack_model.settings
 $ ./manage.py run_modelservice
 ```
 
@@ -33,12 +33,12 @@ $ pytest
 
 ## Development commands:
 
-### 1 - To setup up database for simpl-calc development use:
+### 1 - To setup up database for simpl-blackjack development use:
 
-1. Creates the simpl-calc game with one phase (Play) and one role (Calculator).
+1. Creates the simpl-blackjack game with one phase (Play) and one role (Blackjackulator).
 1. Adds a 'default' run..
-1. Adds 1 leader ('leader@calc.edu'/'leader') to the run.
-1. Adds 2 players to the run ('s#@calc.edu'/'s#' where # is between 1..2. Each player has a private scenario and period 1.
+1. Adds 1 leader ('leader@blackjack.edu'/'leader') to the run.
+1. Adds 2 players to the run ('s#@blackjack.edu'/'s#' where # is between 1..2. Each player has a private scenario and period 1.
 1. The run is set to 'Play' phase
 
 execute:
