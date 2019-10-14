@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  model:
+    build:
+      context: .
+    networks:
+      - simpl-games-api_simpl
+    volumes:
+      - .:/code
+    ports:
+      - "8080:8080"
+    environment:
+      - DJANGO_SETTINGS_MODULE=blackjack_model.settings
+      - SIMPL_GAMES_URL=http://api:8100/apis/
+    stop_signal: SIGTERM
+
+networks:
+  simpl-games-api_simpl:
+    external: true

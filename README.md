@@ -1,11 +1,11 @@
-# simpl-calc-model - example single-player simulation model service.
+# blackjack_model - example single-player simulation model service.
 
 ## Python Setup (assumes Python >= 3.6 and simpl-games-api server running)
 
 ```shell
-$ git clone git@github.com:simplworld/simpl-calc-model.git
-$ cd simpl-calc-model
-$ mkvirtualenv simpl-calc-model
+$ git clone git@github.com:simplworld/blackjack_model.git
+$ cd blackjack_model
+$ mkvirtualenv blackjack_model
 $ add2virtualenv .
 
 $ pip install -r requirements.txt
@@ -33,9 +33,9 @@ $ pytest
 
 ## Development commands:
 
-### 1 - To setup up database for simpl-calc development use:
+### 1 - To setup up database for blackjack development use:
 
-1. Creates the simpl-calc game with one phase (Play) and one role (Calculator).
+1. Creates the blackjack game with one phase (Play) and one role (Calculator).
 1. Adds a 'default' run..
 1. Adds 1 leader ('leader@calc.edu'/'leader') to the run.
 1. Adds 2 players to the run ('s#@calc.edu'/'s#' where # is between 1..2. Each player has a private scenario and period 1.
