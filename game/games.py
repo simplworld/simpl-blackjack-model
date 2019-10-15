@@ -1,10 +1,10 @@
 from modelservice.games import Period, Game
-from modelservice.games import subscribe, register
+from modelservice.games import subscribe
 
 from .runmodel import step_scenario, save_decision
 
 
-class SimplBlackjackPeriod(Period):
+class BlackjackPeriod(Period):
     @subscribe
     async def submit_decision(self, action, **kwargs):
         """
@@ -13,7 +13,7 @@ class SimplBlackjackPeriod(Period):
         scenario in preparation for the next decision.
         """
         # Call will prefix the ROOT_TOPIC
-        # "world.simpl.sims.simpl-blackjack.model.period.1.submit_decision"
+        # "world.simpl.sims.blackjack.model.period.1.submit_decision"
 
         for k in kwargs:
             self.session.log.info("submit_decision: Key: {}".format(k))
@@ -25,6 +25,4 @@ class SimplBlackjackPeriod(Period):
         self.session.log.info("submit_decision: stepped scenario")
 
 
-Game.register('simpl-blackjack', [
-    SimplBlackjackPeriod,
-])
+Game.register("blackjack", [BlackjackPeriod])
