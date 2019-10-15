@@ -1,5 +1,5 @@
 from modelservice.games import Period, Game
-from modelservice.games import subscribe, register
+from modelservice.games import subscribe
 
 from .runmodel import step_scenario, save_decision
 
