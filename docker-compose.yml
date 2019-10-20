@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  model:
+  model.backend:
     build:
       context: .
     networks:
@@ -13,6 +13,7 @@ services:
     environment:
       - DJANGO_SETTINGS_MODULE=blackjack_model.settings
       - SIMPL_GAMES_URL=http://api:8000/apis/
+      - CALLBACK_URL=http://model.backend:8080/callback
     stop_signal: SIGTERM
 
 networks:
