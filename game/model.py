@@ -28,9 +28,10 @@ class Model(object):
             "dealer_busted": False,
             "push": False,
             "player_done": False,
+            "dealer_done": False,
         }
 
-    def createDeck(self):
+    def create_deck(self):
         deck = []
         ranks = ["A", 2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K"]
         suits = ["H", "S", "C", "D"]
@@ -42,7 +43,7 @@ class Model(object):
         random.shuffle(deck)
         return deck
 
-    def calcRankScore(self, rank):
+    def calc_rank_score(self, rank):
         score = {"hard_total": 0, "soft_total": 0}
         if rank == "A":
             score["hard_total"] += 1
@@ -55,35 +56,46 @@ class Model(object):
             score["soft_total"] += rank
         return score
 
-    def calcTotal(self, score):
+    def calc_total(self, score):
         if score["hard_total"] == 21 or score["soft_total"] == 21:
             return 21
         elif score["soft_total"] > 21:
             return score["hard_total"]
         return score["soft_total"]
 
-    def calcHandScore(self, cards):
+    def calc_hand_score(self, cards):
         score = 0
         for card in cards:
-            score += self.calcTotal(self.calcRankScore(card["rank"]))
+            score += self.calc_total(self.calc_rank_score(card["rank"]))
         return score
 
-    def isBusted(self, score):
+    def is_busted(self, score):
         return score > 21
 
-    def dealerTurn(self, data):
+    def deal(self):
+        """ Deal a new hand to a starting position """
+        deck = self.create_deck()
+        deal_data = self.data.copy()
+        deal_data["deck"] = deck
+        deal_data["player_cards"].append(deck.pop())
+        deal_data["dealer_cards"].append(deck.pop())
+        deal_data["player_cards"].append(deck.pop())
+        deal_data["player_score"] = self.calc_hand_score(deal_data["player_cards"])
+        deal_data["dealer_score"] = self.calc_hand_score(deal_data["dealer_cards"])
+        return deal_data
+
+    def dealer_turn(self, data):
         data["player_done"] = True
-        while data["dealer_score"] < 21:
+
+        while data["dealer_score"] < 17:
             card = data.get("deck", []).pop()
             data["dealer_cards"].append(card)
-            data["dealer_score"] = self.calcHandScore(data["dealer_cards"])
-        data["dealer_busted"] = self.isBusted(data["dealer_score"])
-        if data["dealer_score"] < data["player_score"]:
-            data["player_busted"] = True
-        if data["dealer_score"] > data["player_score"]:
-            data["dealer_busted"] = True
+            data["dealer_score"] = self.calc_hand_score(data["dealer_cards"])
+
+        data["dealer_busted"] = self.is_busted(data["dealer_score"])
         if data["dealer_score"] == data["player_score"]:
             data["push"] = True
+        data["dealer_done"] = True
         return data
 
     def step(self, action, data=None):
@@ -103,26 +115,19 @@ class Model(object):
             return self.data
 
         if action == "deal":
-            deck = self.createDeck()
-            deal_data = self.data.copy()
-            deal_data["deck"] = deck
-            deal_data["player_cards"].append(deck.pop())
-            deal_data["dealer_cards"].append(deck.pop())
-            deal_data["player_cards"].append(deck.pop())
-            deal_data["player_score"] = self.calcHandScore(deal_data["player_cards"])
-            deal_data["dealer_score"] = self.calcHandScore(deal_data["dealer_cards"])
+            deal_data = self.deal()
             return deal_data
 
         elif action == "hit":
             card = data.get("deck", []).pop()
             data["player_cards"].append(card)
-            data["player_score"] = self.calcHandScore(data["player_cards"])
-            data["player_busted"] = self.isBusted(data["player_score"])
+            data["player_score"] = self.calc_hand_score(data["player_cards"])
+            data["player_busted"] = self.is_busted(data["player_score"])
             if data["player_busted"]:
                 data["player_done"] = True
             if data["player_score"] == 21:
-                data = self.dealerTurn(data)
+                data = self.dealer_turn(data)
             return data
         elif action == "stand":
-            data = self.dealerTurn(data)
+            data = self.dealer_turn(data)
             return data
