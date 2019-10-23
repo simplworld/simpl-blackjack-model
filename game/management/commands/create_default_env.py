@@ -52,9 +52,9 @@ def command(reset):
     echo("getting or creating run: ", run.name)
 
     # Set run to phase
-    run.phase = phase.id
+    run.phase = play_phase.id
     run.save()
-    echo("setting run to phase: ", phase.name)
+    echo("setting run to phase: ", play_phase.name)
 
     player = games_client.users.get_or_create(
         password="demo",
