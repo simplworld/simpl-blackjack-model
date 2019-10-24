@@ -126,7 +126,10 @@ CALLBACK_URL = os.environ.get("CALLBACK_URL", "http://{hostname}:{port}/callback
 
 SIMPL_GAMES_URL = os.environ.get("SIMPL_GAMES_URL", "http://localhost:8100/apis")
 
-SIMPL_GAMES_AUTH = ("simpl@simpl.world", "simpl")
+SIMPL_USER = os.environ.get("SIMPL_USER", "simpl@simpl.world")
+SIMPL_PASS = os.environ.get("SIMPL_PASS", "simpl")
 
-ROOT_TOPIC = "world.simpl.sims.blackjack"
+SIMPL_GAMES_AUTH = (SIMPL_USER, SIMPL_PASS)
+
+ROOT_TOPIC = os.environ.get("ROOT_TOPIC", "world.simpl.sims.blackjack")
 
