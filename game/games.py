@@ -6,28 +6,6 @@ from modelservice.simpl import games_client
 from .model import Model
 
 
-class BlackjackRunUser(RunUser):
-    @register
-    async def new_scenario(self, **kwargs):
-        """ Create a new scenario, which deals another hand """
-
-        async with games_client as api_session:
-            # Create new Scenario
-            new_scenario = await api_session.scenarios.create(
-                {"runuser": self.pk, "name": "Scenario {}".format(uuid.uuid4())}
-            )
-            # Create new initial period
-            new_period_for_new_scenario = await api_session.periods.create(
-                {"scenario": new_scenario.id, "order": 1, "data": {}}
-            )
-
-            self.session.log.info(
-                f"new_scenario: '{new_scenario.name}' {new_scenario.id}"
-            )
-
-            return new_scenario.pk
-
-
 class BlackjackPeriod(Period):
     @subscribe
     async def submit_decision(self, action, **kwargs):
@@ -70,6 +48,7 @@ class BlackjackPeriod(Period):
 
             print("Period")
             print(period)
+
             if action is None:
                 action = "deal"
 
