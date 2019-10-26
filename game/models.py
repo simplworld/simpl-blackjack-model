@@ -1,3 +1,2 @@
-from django.db import models
-
-# Create your models here.
+# Intentionally blank, here to fullfill a Django requirement
+# You're probably wanting to look in model.py not models.py
