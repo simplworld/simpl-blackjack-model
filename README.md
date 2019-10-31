@@ -54,11 +54,26 @@ default run and recreate it from scratch like this:
 $ ./manage.py create_default_env --reset
 ```
 
-### 2 - To submit a decision on a scenario:
+### Reset Game
+
+To reset the run and empty all of the user scenarios run this command:
 
 ```shell
-$ ./manage.py submit_decision -s <scenario_id> -d <decision>
+$ ./manage.py reset_game
 ```
+
+You can also reset a single user with either:
+
+```shell
+$ ./manage.py reset_user --pk=14
+```
+
+or
+
+```shell
+$ ./manage.py reset_user --email="bob@bob.com"
+```
+
 
 Copyright © 2018 The Wharton School,  The University of Pennsylvania 
 
