@@ -65,7 +65,7 @@ def command(reset):
     echo("getting or creating user: ", player.email)
 
     runuser = games_client.runusers.get_or_create(
-        user=player.id, run=run.id, leader=True
+        user=player.id, run=run.id, leader=False
     )
 
     scenario = games_client.scenarios.get_or_create(
