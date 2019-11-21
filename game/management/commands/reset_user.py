@@ -25,7 +25,7 @@ def command(pk, email):
     echo("Resetting game: ", "Blackjack")
 
     # Get or create the Game
-    game = games_client.games.get_or_create(name="Blackjack", slug="blackjack")
+    game = games_client.games.get_or_create(name="Simpl Blackjack", slug="simpl-blackjack")
     echo("getting or creating game: ", game.name)
 
     # Get or create the Run

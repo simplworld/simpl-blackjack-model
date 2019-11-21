@@ -14,10 +14,10 @@ def command():
     This will remove all RunUser Scenarios from the one default Run
     and create new empty Scenarios and Periods for them.
     """
-    echo("Resetting game: ", "Blackjack")
+    echo("Resetting game: ", "Simpl Blackjack")
 
     # Create a Game
-    game = games_client.games.get_or_create(name="Blackjack", slug="blackjack")
+    game = games_client.games.get_or_create(name="Simpl Blackjack", slug="simpl-blackjack")
     echo("getting or creating game: ", game.name)
 
     # Create game Phases ("Play")

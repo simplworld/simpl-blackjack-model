@@ -131,5 +131,5 @@ SIMPL_PASS = os.environ.get("SIMPL_PASS", "simpl")
 
 SIMPL_GAMES_AUTH = (SIMPL_USER, SIMPL_PASS)
 
-ROOT_TOPIC = os.environ.get("ROOT_TOPIC", "world.simpl.sims.blackjack")
+ROOT_TOPIC = os.environ.get("ROOT_TOPIC", "world.simpl.sims.simpl-blackjack")
 

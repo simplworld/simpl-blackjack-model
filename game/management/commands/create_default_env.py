@@ -10,7 +10,7 @@ def echo(text, value):
 def delete_default_run(games_client):
     """ Delete default Run """
     echo("Resetting the Blackjack game default run...", " done")
-    game = games_client.games.get_or_create(slug="blackjack")
+    game = games_client.games.get_or_create(slug="simpl-blackjack")
     runs = games_client.runs.filter(game=game.id)
     for run in runs:
         if run.name == "default":
@@ -41,7 +41,7 @@ def command(reset):
             delete_default_run(games_client)
 
     # Create a Game
-    game = games_client.games.get_or_create(name="Blackjack", slug="blackjack")
+    game = games_client.games.get_or_create(name="Simpl Blackjack", slug="simpl-blackjack")
     echo("getting or creating game: ", game.name)
 
     # Create game Phases ("Play")

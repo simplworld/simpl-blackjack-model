@@ -35,10 +35,9 @@ $ pytest
 
 ### 1 - To setup up database for simpl-blackjack development use:
 
-1. Creates the simpl-blackjack game with one phase (Play) and one role (Blackjackulator).
+1. Creates the simpl-blackjack game with one phase (Play) and no roles.
 1. Adds a 'default' run..
-1. Adds 1 leader ('leader@blackjack.edu'/'leader') to the run.
-1. Adds 2 players to the run ('s#@blackjack.edu'/'s#' where # is between 1..2. Each player has a private scenario and period 1.
+1. Adds 1 player to the run, demo@example.com, with a private scenario and period 1.
 1. The run is set to 'Play' phase
 
 execute:
