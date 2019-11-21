@@ -12,6 +12,9 @@ class BlackjackScenario(Scenario):
         """
         Deal a new game to the user
         """
+        # Call will prefix the ROOT_TOPIC
+        # "world.simpl.sims.simpl-blackjack.model.scenario.1.deal_new_game"
+
         self.session.log.info("deal_new_game: {}".format(self.pk))
 
         async with games_client as api_session:
@@ -37,7 +40,7 @@ class BlackjackScenario(Scenario):
         scenario in preparation for the next decision.
         """
         # Call will prefix the ROOT_TOPIC
-        # "world.simpl.sims.blackjack.model.scenario.1.submit_decision"
+        # "world.simpl.sims.simpl-blackjack.model.scenario.1.submit_decision"
 
         # Log our decision
         self.session.log.info("submit_decision: '{}'".format(action))
@@ -109,4 +112,4 @@ class BlackjackScenario(Scenario):
         self.session.log.info("submit_decision: stepped scenario")
 
 
-Game.register("blackjack", [BlackjackScenario])
+Game.register("simpl-blackjack", [BlackjackScenario])
